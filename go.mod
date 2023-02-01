@@ -1,6 +1,6 @@
 module entdemo
 
-go 1.19
+go 1.18
 
 require (
 	entgo.io/ent v0.11.7

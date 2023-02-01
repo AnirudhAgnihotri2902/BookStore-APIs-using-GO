@@ -1,0 +1,53 @@
+version: '3'
+services:
+  app:
+    container_name: bookstore
+    build: .
+    ports:
+      - 8080:8080
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - postgres_db
+    networks:
+      - fullstack
+
+
+  postgres_db:
+    image: postgres:latest
+    container_name: full_db_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Anirudh@123
+      - POSTGRES_DB=Densityasmt
+      - DATABASE_HOST=localhost
+    ports:
+      - '5432:5432'
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    networks:
+      - fullstack
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: codewithanirudhagni@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Anirudh@123
+    depends_on:
+      - postgres_db
+    ports:
+      - "5050:80"
+    networks:
+      - fullstack
+    restart: unless-stopped
+
+volumes:
+  api:
+  database_postgres:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack:
+    driver: bridge
